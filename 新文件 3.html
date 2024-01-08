@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+	<head>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      
+      <!-- Compiled and minified CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	  <!-- 引入 jQuery -->
+	  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <!-- Compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	  <!-- 利用Google Visualization讀取Google Sheet https://www.labnol.org/code/google-sheet-d3js-visualization-200608 -->
+	  <script src="https://www.gstatic.com/charts/loader.js"></script>
+	  
+      <script type="text/javascript">
+	  var x = decodeURIComponent(GetUrlVar('id')); 
+      var i = Number(x);
+      // https://developers.google.com/chart/interactive/docs/quick_start
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded. 
+      google.charts.setOnLoadCallback(init);
+
+      function init() {
+        // 這個例子使用的試算表是 https://docs.google.com/spreadsheets/d/1QScI5d56Kh-LGywY4WR6EvRGPcalFQYUAdqMxbFVDvk/copy
+        // 將上述試算表另存副本後，你要在自己的雲端硬碟將該試算表設定成[知道連結的使用者都能查看]。
+        // 然後讓程式讀取 https://docs.google.com/spreadsheets/d/瀏覽器網址列上的網址擷取序號部分/gviz/tq?sheet=工作表名稱
+        // 也就是將下列的 1QScI5d56Kh-LGywY4WR6EvRGPcalFQYUAdqMxbFVDvk 更換成自己的檔案序號，以及最後部分指讀取哪個工作表。
+        var url =
+       'https://docs.google.com/spreadsheets/d/1ewL9oPEZI6AR1XrHMmNCbBa5h9KlUH40LaFoD92PG-o/edit?resourcekey#gid=2140450853/gviz/tq?sheet=回饋表單 (回覆)';
+        var query = new google.visualization.Query(url);
+        query.setQuery('select *');   
+        query.send(processSheetsData);}
+      function formresponse() {
+          var n = document.forms["form1"]["想看到介紹的歌手"].value;
+          var s = document.forms["form1"]["幫網頁評個分吧"].value;
+          if (n==null || n=="")
+             {
+              alert("人名不可為空白!");
+              return false;
+             }
+          else if (s==null || s=="")
+             {
+              alert("評分不可為空白!"); 
+              return false;
+
+             }
+          else
+             {
+              var MySubmit = "https://docs.google.com/forms/d/e/1FAIpQLScR0nxfDmuq_sIpeEmwsuSeeiB6HRgLpGSJVCif6FyD-yyTpw/formResponse?usp=pp_url&entry.451643489="+ n + "&entry.1245144495=" + s + "&submit=Submit";
+              var NewOpen = window.open(MySubmit);
+             }
+      }
+       </script> 
+	   
+      <!-- 初始化下拉式選單 -->
+	  <script>
+		  document.addEventListener('DOMContentLoaded', function () {
+			  var elems = document.querySelectorAll('.dropdown-trigger');
+			  var instances = M.Dropdown.init(elems);
+		  });
+	  </script>
+	  <style>
+		table {
+		  width: 50%;
+		  border-collapse: collapse;
+		  margin: auto;
+		}
+		th, td {
+		  border: 1px solid black;
+		  padding: 8px;
+		  text-align: left;
+		}
+		th {
+		  background-color: #f2f2f2;
+		}
+	  </style>	   
+  </head>
+    <body>
+		<ul id="dropdown1" class="dropdown-content">
+		  <li><a href="https://gma.tavis.tw/GM34/GMA/Nomination.asp">第34屆</a></li>
+		  <li><a href="https://gma.tavis.tw/gm33/GMA/Nomination.asp">第33屆</a></li>
+		  <li class="divider"></li>
+		  <li><a href="https://gma.tavis.tw/gm32/GMA/Nomination.asp">第32屆</a></li>
+		</ul>
+		<nav>
+		  <div class="nav-wrapper">
+			<a class="brand-logo">華語歌手介紹</a>
+			<ul class="right hide-on-med-and-down">
+			  <li><a href="https://www.storm.mg/lifestyle/4946014">2023最紅華語歌手</a></li>
+			  <!-- Dropdown Trigger -->
+			  <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">金曲獎入圍及得獎名單<i class="material-icons right">arrow_drop_down</i></a></li>
+			</ul>
+		  </div>
+		</nav>
+      
+      
+    <div class="row"   id = "demo">
+    <script>
+      let images = ["https://40.cw.com.tw/my-cw/images/people/%E5%91%A8%E6%9D%B0%E5%80%AB.jpg",
+				  "https://i.kfs.io/artist/global/74,0v9/fit/500x500.jpg", 
+                  "https://i.kfs.io/artist/global/8280,0v23/fit/500x500.jpg",
+                  "https://lineimg.omusic.com.tw/img/artist/4521.jpg?v=20230525203020", 
+                  "https://i.kfs.io/artist/global/9188,0v6/fit/500x500.jpg", 
+                  "https://i.kfs.io/artist/global/13667,0v26/fit/500x500.jpg"];
+
+      let singer = ["周杰倫",
+				  "蔡依林",
+                  "林俊傑",
+                  "蔡健雅",
+                  "李聖傑",
+                  "A-Lin"];
+      
+      let introduce = ["http://www.tpmw.org.tw/index.php/%E5%91%A8%E6%9D%B0%E5%80%AB",
+				   "http://www.tpmw.org.tw/index.php/%E8%94%A1%E4%BE%9D%E6%9E%97",
+                   "http://www.tpmw.org.tw/index.php/%E6%9E%97%E4%BF%8A%E5%82%91",
+                   "http://www.tpmw.org.tw/index.php/%E8%94%A1%E5%81%A5%E9%9B%85",
+                   "https://mojim.com/twy102201x9999x9999.htm",
+                   "http://www.tpmw.org.tw/index.php/A-Lin"];
+				   
+	  let song = ["https://www.youtube.com/watch?v=YJfHuATJYsQ",
+				  "https://www.youtube.com/watch?v=cB7DIIG0ykk",
+				  "https://www.youtube.com/watch?v=GSQV3oXyjMQ",
+				  "https://www.youtube.com/watch?v=116OjLa1DwY",
+				  "https://www.youtube.com/watch?v=7NIsBeVRAgk",
+				  "https://www.youtube.com/watch?v=BRcudpJzy1I"];
+				  
+      var s = "";
+      for ( i = 0 ; i < images.length ; i++)
+      {
+
+        s +=' <div class="col s12 m6 l4">';
+        s +='  <div class="card">';
+        s +='    <div class="card-image">';
+        s +='      <img src="' + images[i]  + ' " width=100%>';
+        s +='      <span class="card-title">';
+		s +='    <a href="' + song[i] + '">歌曲</a>';
+		s +='    </span>';
+        s +='    </div>';
+        s +='    <div class="card-content">';
+        s +='        <p>' + singer[i]  + ' </p>';
+        s +='    </div>';
+        s +='    <div class="card-action">';
+        s +='      <a href="' + introduce[i] + '" >介紹</a>';
+        s +='    </div>';
+        s +='  </div>';
+        s +='</div>';
+       }
+
+       document.getElementById("demo").innerHTML = s;
+      </script>
+   
+          <form class="col s12"  name="form1" action="javascript:formresponse();">
+          <div class="row">
+            <div class="input-field col s12">
+             <input placeholder="想看到介紹的歌手" id="input_text" type="text" class="validate" name="想看到介紹的歌手">
+             <label for="想看到介紹的歌手">多多指點</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input placeholder="幫網頁評個分吧" id="input_text" type="text" class="validate" name="幫網頁評個分吧">
+              <label for="幫網頁評個分吧"></label>
+		      <button class="waves-effect waves-light btn-large" type="submit">留言<i class="material-icons right">cloud</i></button>
+		  
+            </div>
+          </div>
+        </form>      
+		<table>
+		  <thead>
+			<tr>
+			  <th>藝人</th>
+			  <th>獎項</th>
+			  <th>次數</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr>
+			  <td>周杰倫</td>
+			  <td>最佳華語男歌手獎</td>
+			  <td>2</td>
+			</tr>
+			<tr>
+			  <td>蔡健雅</td>
+			  <td>最佳華語女歌手獎</td>
+			  <td>4</td>
+			</tr>
+			<tr>
+			  <td>林俊傑</td>
+			  <td>最佳華語男歌手獎</td>
+			  <td>1</td>
+			</tr>
+		  </tbody>
+		</table>
+
+
+
+     </body>
+
+
+  <footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Thank's For Watching</h5>
+                <p class="grey-text text-lighten-4">Welcome to visit again.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">串流平台</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="https://www.spotify.com/tw/premium/"> Spotify </a></li>
+                  <li><a class="grey-text text-lighten-3" href="https://www.apple.com/tw/apple-music/"> Apple Music </a></li>
+                  <li><a class="grey-text text-lighten-3" href="https://ssl.kkbox.com/tw/billing/index.php?ktm_id=GrgREhYpP-v1dIwVfQ&gad_source=1&gclid=Cj0KCQiAtOmsBhCnARIsAGPa5yZmr_nmlRnbRmndL5DCta4r5B5Sb5gjb91m99NynHGjWdfHadzPPkoaArh4EALw_wcB#limitedtime">KKbox</a></li>
+				  <li><a class="grey-text text-lighten-3" href="https://music.youtube.com/"> Youtube Music </a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 華語歌手介紹
+            <a class="grey-text text-lighten-4 right" href="https://kma.kkbox.com/charts/daily/newrelease?terr=tw&lang=tc&cate=297">華語新歌日榜 </a>
+            </div>
+          </div>
+        </footer>  
